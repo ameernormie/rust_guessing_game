@@ -81,3 +81,23 @@ let y = 10;
 println!("x = {} and y = {}", x, y);
 }
 ```
+
+#### Using a Crate to Get More Functionality
+
+Remember that a crate is a collection of Rust source code files. The project we’ve been building is a binary crate, which is an executable. The `rand` crate is a library crate, which contains code intended to be used in other programs.
+
+#### Updating a Crate to Get a New Version
+
+When you do want to update a crate, Cargo provides another command, `update`, which will ignore the Cargo.lock file.
+If `rand` crate is the version `0.5.5` in your dependency, by default, Cargo will only look for versions greater than `0.5.5` and less than `0.6.0`.
+If the rand crate has released two new versions, `0.5.6` and `0.6.0`, you would see the following if you ran cargo update:
+
+```rust
+$ cargo update
+    Updating crates.io index
+    Updating rand v0.5.5 -> v0.5.6
+```
+
+#### Crate docs:
+
+Another neat feature of Cargo is that you can run the `cargo doc --open` command, which will build documentation provided by all of your dependencies locally and open it in your browser.
