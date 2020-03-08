@@ -53,3 +53,31 @@ The next part of the code, `.read_line(&mut guess)`, calls the `read_line` metho
 The `read_line` takes the user input and place it into a string, so it takes a string as an argument. The string argument needs to be mutable so the method can change the string’s content by adding the user input.
 
 The `&` indicates that this argument is a reference. Like variables, references are immutable by default. Hence, you need to write &mut guess rather than &guess to make it mutable.
+
+##### io::Result
+
+```rust
+io::stdin().read_line(&mut guess)
+        .expect("Failed to read line");
+```
+
+`read_line` puts what the user types into the string we’re passing it, but it also returns a value, in this case, an `io::Result`. Rust has a number of types named `Result` in its standard library: a generic `Result` as well as specific versions for submodules, such as `io::Result`. The `Result` types are [enumerations](https://doc.rust-lang.org/book/ch06-00-enums.html).
+
+For `Result`, the variants are `Ok` or `Err`. The `Ok` variant indicates the operation was successful, and inside `Ok` is the successfully generated value. The `Err` variant means the operation failed, and `Err` contains information about how or why the operation failed.
+
+The purpose of these `Result` types is to encode error-handling information. Values of the `Result` type, like values of any type, have methods defined on them. An instance of `io::Result` has an `expect` method that you can call. If this instance of `io::Result` is an `Err` value, expect will cause the program to crash and display the message that you passed as an argument to expect.
+
+##### Printing values with `println!` placeholders:
+
+```rust
+println!("You guessed: {}", guess);
+```
+
+```rust
+fn main() {
+let x = 5;
+let y = 10;
+
+println!("x = {} and y = {}", x, y);
+}
+```
