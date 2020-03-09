@@ -101,3 +101,80 @@ $ cargo update
 #### Crate docs:
 
 Another neat feature of Cargo is that you can run the `cargo doc --open` command, which will build documentation provided by all of your dependencies locally and open it in your browser.
+
+#### Match
+
+```rust
+use std::io;
+use std::cmp::Ordering;
+use rand::Rng;
+
+fn main() {
+
+    // ---snip---
+
+    println!("You guessed: {}", guess);
+
+    match guess.cmp(&secret_number) {
+        Ordering::Less => println!("Too small!"),
+        Ordering::Greater => println!("Too big!"),
+        Ordering::Equal => println!("You win!"),
+    }
+}
+
+```
+
+A `match` expression is made up of arms. An `arm` consists of a pattern and the code that should be run if the value given to the beginning of the match expression fits that arm’s pattern. Rust takes the value given to `match` and looks through each arm’s pattern in turn.
+
+#### Types
+
+Rust has a strong, static type system. However, it also has type inference. When we wrote let mut guess = String::new(), Rust was able to infer that guess should be a String and didn’t make us write the type. The secret_number, on the other hand, is a number type.
+**i32, a 32-bit number; u32, an unsigned 32-bit number; i64, a 64-bit number; as well as others.**
+
+#### Loops
+
+```rust
+// --snip--
+
+    println!("The secret number is: {}", secret_number);
+
+    loop {
+        println!("Please input your guess.");
+
+        // --snip--
+
+        match guess.cmp(&secret_number) {
+            Ordering::Less => println!("Too small!"),
+            Ordering::Greater => println!("Too big!"),
+            Ordering::Equal => println!("You win!"),
+        }
+    }
+}
+
+```
+
+#### Handling Invalid Input
+
+To further refine the game’s behavior, rather than crashing the program when the user inputs a non-number, let’s make the game ignore a non-number so the user can continue guessing.
+
+```rust
+// --snip--
+
+io::stdin().read_line(&mut guess)
+    .expect("Failed to read line");
+
+let guess: u32 = match guess.trim().parse() {
+    Ok(num) => num,
+    Err(_) => continue,
+};
+
+println!("You guessed: {}", guess);
+
+// --snip--
+
+```
+
+Switching from an `expect` call to a `match` expression is how you generally move from crashing on an error to handling the error.
+Remember that parse returns a `Result` type and `Result` is an enum that has the variants `Ok` or `Err`. We’re using a match expression here, as we did with the Ordering result of the cmp method.
+
+If `parse` is not able to turn the string into a number, it will return an `Err` value that contains more information about the error. The `Err` value does not match the `Ok(num)` pattern in the first match arm, but it does match the `Err(_)` pattern in the second arm. The `underscore`, \_, is a catchall value; in this example, we’re saying we want to match all `Err` values, no matter what information they have inside them. So the program will execute the second arm’s code, continue, which tells the program to go to the next iteration of the loop and ask for another guess. So, effectively, the program ignores all errors that parse might encounter!
