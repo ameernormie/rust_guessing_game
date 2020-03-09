@@ -1,5 +1,18 @@
 ### Guessing game in RUST
 
+### What I learned
+
+- [1 Mutable and immutable variables](#storing-values-in-variables)
+- [2 Type inference and converting one type to another using shadowing](#types)
+- [3 Input/output module](#input-output)
+- [4 `Result` type in rust (`Ok` and `Err`)](#io-result)
+- [5 Using external `crates`](#using-a-crate-to-get-more-functionality)
+- [6 Updating `crates`](#updating-a-crate-to-get-a-new-version)
+- [7 Creating `docs` for crates](#crate-docs)
+- [8 Loops](#loops)
+- [9 Match method](#match)
+- [10 Handling Invalid Inputs](#handling-invalid-inputs)
+
 #### Problem Statement
 
 ```rust
@@ -11,7 +24,7 @@ If the guess is correct, the game will print a congratulatory
 message and exit.
 ```
 
-#### Input/Output
+#### Input Output
 
 To obtain user input and then print that input as output, we need to bring the `io`(input/output) library into the scope. The `io` library comes from the standard library (which is known as `std`):
 
@@ -19,15 +32,15 @@ To obtain user input and then print that input as output, we need to bring the `
 use std::id;
 ```
 
-#### What is prelude:
+#### What is prelude
 
 The prelude is the list of things that Rust automatically imports into every Rust program. It's kept as small as possible, and is focused on things, particularly traits, which are used in almost every single Rust program.
 
-#### Entry point:
+#### Entry point
 
 `fn main()` is the main entry point of the program
 
-#### Storing values in variables:
+#### Storing values in variables
 
 `let` is used to create a variable.
 
@@ -54,7 +67,7 @@ The `read_line` takes the user input and place it into a string, so it takes a s
 
 The `&` indicates that this argument is a reference. Like variables, references are immutable by default. Hence, you need to write &mut guess rather than &guess to make it mutable.
 
-##### io::Result
+##### io Result
 
 ```rust
 io::stdin().read_line(&mut guess)
@@ -98,7 +111,7 @@ $ cargo update
     Updating rand v0.5.5 -> v0.5.6
 ```
 
-#### Crate docs:
+#### Crate docs
 
 Another neat feature of Cargo is that you can run the `cargo doc --open` command, which will build documentation provided by all of your dependencies locally and open it in your browser.
 
@@ -153,7 +166,7 @@ Rust has a strong, static type system. However, it also has type inference. When
 
 ```
 
-#### Handling Invalid Input
+#### Handling Invalid Inputs
 
 To further refine the game’s behavior, rather than crashing the program when the user inputs a non-number, let’s make the game ignore a non-number so the user can continue guessing.
 
