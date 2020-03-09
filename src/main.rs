@@ -1,15 +1,39 @@
+use rand::Rng;
+use std::cmp::Ordering;
 use std::io;
 
 fn main() {
     println!("Guess the number!");
+
+    let secret_number = rand::thread_rng().gen_range(1, 101);
+
     println!("Please input your guess.");
-
-    // Creates a mutable variable that is currently bound to a new, empty instance of a String.
-    let mut guess = String::new();
-
-
-    io::stdin().read_line(&mut guess)
-        .expect("Failed to read line");
-
-    println!("You guessed: {}", guess)
+    loop {
+        // Creates a mutable variable that is currently bound to a new, empty instance of a String.
+        let mut guess = String::new();
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed to read line");
+        /* we want to convert the String the program reads as input into a real number
+        type so we can compare it numerically to the secret number.
+        Rust allows us to shadow the previous value of guess with a new one.
+        This feature is often used in situations in which you want to convert a value from one type to another type.
+        The parse method on strings parses a string into some kind of number.
+        The parse method returns a Result type. If parse returns an Err Result variant because it couldn’t
+        create a number from the string, the expect call will crash the game and print the message we give it.
+        */
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
+        println!("You guessed: {}", guess);
+        match guess.cmp(&secret_number) {
+            Ordering::Less => println!("Too small!"),
+            Ordering::Greater => println!("Too big!"),
+            Ordering::Equal => {
+                println!("You win!");
+                break;
+            }
+        }
+    }
 }
